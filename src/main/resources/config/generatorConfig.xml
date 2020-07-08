@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--标签顺序：
+        1.**<properties>:这个标签用来指定外部的属性元素，不是必须元素；
+        #例如：
+            引用数据库的配置文件：
+            @标签内属性：
+                resource: 指定classpath路径下的文件 config/jdbcConfig.properties
+                url：可以指定文件系统上的特定属性
+                    F:\java\javaDemo\springBoot\springboot-test07\src\main\resources\config\jdbcConfig.properties
+        2.**<classPathEntry>:指定数据库的驱动，如果IDE(eclipse或者idea) 项目里导入了jar包，那么就不需要配置了jar包的绝对路径了（此标签一般无需配置）
+        #例如：
+            <classPathEntry location="e:/project/mybatis/lib/mysql-connector-java-5.0.8-bin.jar"/>
+        3.**<context>:主要的配置标签
+            @标签内属性：
+                #id:无特殊意义，用来确定唯一的一个<context>标签
+                #defaultModelType:定义了MBG如何生成实体类
+                    *conditional:默认值 *flat *hierarchical
+                #targetRuntime:指定生成的代码的运行环境
+                    *MyBatis3:默认值 *Mybatis3Simple:去除和"Example"查询有关的内容 *Ibatis2Java2 *Ibatis2Java5
+                #introspectedColumnImpl
+            -->
+<!--    <properties resource="config/jdbcConfig.properties"/>-->
+    <context id="DB2Tables" defaultModelType="flat">
+        <!-- <context>标签内标签：
+                    #<property>***（不常用）
+                    #<plugin>***（不常用）
+                    #<commentGenerator>
+                        子元素属性：<property name="**" value="**">
+                            suppressAllComments:生成注释 默认false生成 true不生成
+                            suppressDate：生成注释时间戳 默认false生成 true不生成
+                            注：不生成比较好 全部true
+                    #<jdbcConnection>
+                        标签内属性：
+                            driverClass：数据库驱动
+                            connectionURL：数据库URL
+                            userID：数据库ID
+                            password：数据库密码
+                    #<javaTypeResolver>:指定JDBC类型和java类型如何转换
+                    **************************************************
+                    #<javaModelGenerator>：指定生成实体类的配置信息
+                    #<sqlMapGenerator>：指定映射文件存放的位置
+                    #<javaClientGenerator>：指定dao接口文件的存放的位置
+                        标签内属性：
+                            targetPackage：生成实体类存放的包名
+                            targetProject：指定目标项目路径
+                        子元素属性：
+                            constructorBased：不常用，默认即可
+                            enableSubPackages：true：若为true，根据catalog和schema来生成子包；默认false（常用）
+                            immutable：配置实体类属性是否可以改变
+                            rootClass：设置所有的实体类的基类
+                            trimStrings：是否去除数据库数据的空格true：去除；默认false（常用）
+                    **************************************************
+                    #<table>：数据库表的相关配置
+        -->
+        <commentGenerator>
+            <!-- 是否生成注释时间戳 -->
+            <property name="suppressDate" value="true"/>
+            <!--是否要删除注释true删除false不删除-->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.199.117:3306/my_graphql?characterEncoding=UTF-8"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!-- 默认false,把JDBC DECIMAL和NUMERIC类型解析为Integer,为true时把JDBC DECIMAL和
+             NUMERIC类型解析为java.math.BigDecimal-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!--生成实体类存放位置-->
+        <javaModelGenerator targetPackage="com.simmoon.mygraphqldemo.model" targetProject="src/main/java/">
+            <!-- 是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true"/>
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources/">
+            <!-- 是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--生成Dao类存放位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.simmoon.mygraphqldemo.mapper" targetProject="src/main/java/">
+            <!-- 是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!--生成对应表及类名 制定数据库表-->
+        <!--
+        <table>标签内属性：
+            tableName：要生成的表名 % 生成全部表
+            *************
+            一个数据库系统包含多个Catalog，每个Catalog包含多个Schema，每个Schema包含多个数据库对象（表、视图、字段等）
+            schema：数据库的schema，设置后，生成SQL表名变成schema.tableName的形式
+            catalog：数据库的catalog，设置后，生成的SQL表明变成catalog.tableName的形式
+            *************
+            alias：指定后，表列名变成alias_***(实际列名)的形式
+            domainObjectName:生成后的实例名
+            enableCountByExample:Count语句中加入where条件查询，默认true开启
+            enableUpdateByExample:Update语句中加入where条件查询，默认true开启
+            enableDeleteByExample:Delete语句中加入where条件查询，默认true开启
+            enableSelectByExample:Select多条语句中加入where条件查询，默认true开启
+            selectByPrimaryKeyQueryId:
+            selectByExampleQueryId:Select单个对象语句中加入where条件查询，默认true开启
+           （不常用）
+            modelType：
+            escapeWildcards：是否对schema和表明进行转义，表名(**_**)一些数据库驱动需要进行转义。默认false
+            delimitIdentifiers：是否给标识符增加分隔符，默认false
+            delimitAllColumns：是否给所有列增加分隔符，默认false
+            ……等
+        -->
+        <!--
+        <table>标签子元素
+            #<generateKey>：用来指定自动生成主键的属性
+            #<columnRenaminRule>：使用该元素可以在生成列之前，对列进行重命名
+            #<columnOverride>：将某些属性默认计算的值更改为指定
+            #<ignoreColumn>：屏蔽不需要生成的列
+
+        -->
+        <table tableName="school" domainObjectName="School">
+            <!-- 实体的命名规则,false：默认为驼峰命名 true：按数据库真实命名 -->
+            <property name="useActualColumnNames" value="false"/>
+
+            <!--column：生成列的列名 sqlStatement：将返回新值的SQL语句-->
+            <!--<generatedKey column="" sqlStatement=""></generatedKey>-->
+
+            <!--searchString:要去除的** replaceString：替换为**-->
+            <!--<columnRenamingRule searchString="" replaceString=""></columnRenamingRule>-->
+
+            <!--指定列的java数据类型-->
+            <!--<columnOverride column="LONG_VARCHAR_FIELD" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+
+            <!--指定要忽略的列 column：要忽略的列名 delimitedColumnName：列名是否区分大小写。true区分false不区分-->
+            <!--<ignoreColumn column="" delimitedColumnName=""/>-->
+        </table>
+        <table tableName="teacher" domainObjectName="Teacher">
+            <!-- 实体的命名规则,false：默认为驼峰命名 true：按数据库真实命名 -->
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+    </context>
+</generatorConfiguration>

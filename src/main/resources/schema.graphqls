@@ -1,0 +1,24 @@
+# scheme.graphqls 则是 query/mutation 具体的 scheme 定义字段、类型
+type School {
+    id: ID!
+    schoolId: String
+    schoolName: String
+    schoolAge: String
+    schoolAddress: String
+    teachers: [Teacher]
+    master: String
+}
+
+type Teacher{
+    teacherId: String
+    teacherName: String
+    teacherPhone: String
+    schoolId:  String
+}
+
+input TeacherInput{
+    teacherId: String
+    teacherName: String
+    teacherPhone: String
+    schoolId:  String
+}

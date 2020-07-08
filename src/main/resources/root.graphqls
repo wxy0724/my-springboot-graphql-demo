@@ -1,0 +1,7 @@
+# root.graphqls 是graphql 服务入口定义
+type Query {
+    # 根据学校Id查询学校，schoolId不能为空，返回的School不能为空
+    getSchool(schoolId:String!):School!
+}
+
+

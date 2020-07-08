@@ -1,0 +1,42 @@
+# mysql
+spring:
+  datasource:
+    #MySQL配置
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.199.117:3306/my_graphql?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+# Mybatis 配置
+mybatis:
+  typeAliasesPackage: com.simmoon.mygraphqldemo.model
+  mapperLocations: classpath:mapper/*.xml
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: on
+    corsEnabled: on
+  tools:
+    schemaLocationPattern: "**/*.graphqls"
+graphiql:
+  mapping: /graphiql
+  endpoint:
+    graphql: /graphql
+    subscriptions: /subscriptions
+  static:
+    basePath: /
+  pageTitle: GraphiQL
+  cdn:
+    enabled: false
+    version: 0.11.11
+  props:
+    resources:
+      query: testquery.query
+      defaultQuery: testquery.query
+    variables:
+      editorTheme: "solarized light"
+  headers:
+    Authorization: "Bearer vdff3344ffs v"
+  enabled: on
+
